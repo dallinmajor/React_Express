@@ -1,17 +1,17 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const router = require('./routes');
+
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://dallinmajor:Pin4Dallin@ds059516.mlab.com:59516/recipebook",
+  { useNewUrlParser: true }
+);
+
+const PORT = 5000;
 
 const app = express();
+app.use(bodyParser.json({ useNewUrlParser: true }));
+app.use(router);
 
-app.get('/api/customers', (req, res) => {
-  const customers = [
-    {id: 1, firstName: 'John', lastName: 'Doe'},
-    {id: 2, firstName: 'Brad', lastName: 'Traversy'},
-    {id: 3, firstName: 'Mary', lastName: 'Swanson'},
-  ];
-
-  res.json(customers);
-});
-
-const port = 5000;
-
-app.listen(port, () => `Server running on port ${port}`);
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
